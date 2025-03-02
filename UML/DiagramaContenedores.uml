@@ -1,0 +1,32 @@
+@startuml
+!include <C4/C4_Container>
+
+title Diagrama de Arquitectura - Nivel de Contenedores
+
+Container(spa, "SPA Angular", "JavaScript", "Interfaz web transaccional")
+Container(mobile, "App Móvil", "Ionic+React\n /Flutter", "Autenticación biométrica\n Aplicación multiplataforma transaccional")
+ContainerDb(redis, "Redis", "Caché", "Caché datos frecuentes")
+
+Container(api_gateway, "Amazon API Gateway", "Go", "Throttling\nTransformación de protocolos")
+Container(auth_service, "OAuth0", "SaaS", "Identity Provider\nMFA")
+Container(notificaciones_sms, "Servicio Notificaciones SMS", "eclipsoft/RTC", "Notificar cliente\n Normativa")
+Container(notificaciones_mail, "Servicio Notificaciones EMAIL", "Office365/SendGrid", "Notificar cliente\n Normativa")
+
+
+Container(core_service, "Core Banking", "C#", "Transacciones principales")
+Container(detail_service, "Detalle Cliente", "C#", "PagoDirecto ISO 22002")
+ContainerDb(audit_db, "EventStoreDB", "Event Sourcing", "Auditoría GDPR")
+
+Rel(spa, api_gateway, "HTTPS/2")
+Rel(mobile, api_gateway, "HTTPS/2")
+
+Rel(api_gateway, core_service, "gRPC")
+Rel(api_gateway, detail_service, "REST/JSON")
+Rel(api_gateway, audit_db, "Eventos CQRS")
+Rel(api_gateway, redis, "Lecturas frecuentes")
+
+Rel(api_gateway, auth_service, "OpenID Connect")
+Rel(api_gateway, notificaciones_sms, "Async Messaging")
+Rel(api_gateway, notificaciones_mail, "Async Messaging")
+
+@enduml

@@ -1,0 +1,41 @@
+
+@startuml
+!include <C4/C4_Context>
+
+title Diagrama de Arquitectura - Nivel de Contexto
+
+Person(usuario, "Usuario Final", "Accede a servicios bancarios mediante aplicaciones")
+
+System_Boundary(bp, "Sistema de Banca Personas Financiera BP") {
+    System(spa, "SPA Angular", "Aplicación web transaccional")
+    System(mobile, "App Móvil (Ionic+React/ Flutter)", "Aplicación multiplataforma transaccional")
+    System(api_gateway, "API Gateway (Kong)", "Enrutamiento y gestión de APIs")
+    
+    System(core, "Plataforma Core Financiero", "Sistema transaccional principal")
+   
+    SystemDb(audit_db, "EventStoreDB", "Base de datos de auditoría")
+    SystemDb(redis, "Redis", "Caché de datos frecuentes")
+}
+
+System_Ext(banred, "PagoDirecto", "Servicio de Transferencias en Tiempo Real")
+System_Ext(auth0, "Auth0", "Servicio de autenticación OAuth2.0")
+System_Ext(twilio, "RTC/Eclipsoft", "Notificaciones SMS")
+System_Ext(sendgrid, "SendGrid/Office365", "Notificaciones Email")
+
+Rel(usuario, spa, "Banca Web \n Portal transaccional")
+Rel(usuario, mobile, "Autenticación biométrica\nBanca móvil")
+
+Rel(spa, api_gateway, "API REST/HTTPS")
+Rel(mobile, api_gateway, "API REST/HTTPS")
+
+Rel(api_gateway, core, "gRPC", "Datos básicos")
+Rel(api_gateway, audit_db, "Eventos CQRS")
+Rel(api_gateway, redis, "Lecturas frecuentes")
+
+Rel(api_gateway, banred, "ISO 22002")
+Rel(api_gateway, auth0, "OAuth2.0/JWT")
+Rel(api_gateway, twilio, "API \nNotificaciones SMS")
+Rel(api_gateway, sendgrid, "API \nNotificaciones EMAIL")
+
+@enduml
+
