@@ -19,8 +19,8 @@ Repositorio oficial del sistema de banca en línea para la Financiera BP, desarr
 | Capa               | Tecnologías                                                                 |  
 |--------------------|-----------------------------------------------------------------------------|  
 | **Frontend**       | Angular, Ionic+React/ Flutter                                               |  
-| **Backend**        | Java 21 (Spring Boot 4), .NET 8                                             |  
-| **Bases de Datos** | Amazon Aurora (MySQL), Redis, EventStoreDB                                  |  
+| **Backend**        | .NET 8                                                                      |  
+| **Bases de Datos** | Core Database (FitBank, Financia, Cobis), Redis, EventStoreDB               |  
 | **Seguridad**      | Auth0 (OAuth2.0), AWS KMS, HashiCorp Vault                                  |  
 | **Infraestructura**| AWS EC2,Amazon API Gateway                                                  |  
 
